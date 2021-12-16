@@ -1,3 +1,3 @@
-export function helloWorld(name: string) {
-  console.log(`Hello ${name}`);
-}
+import Leetcode from './leetcode';
+
+export { Leetcode };
