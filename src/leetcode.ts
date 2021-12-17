@@ -39,4 +39,11 @@ export default class Leetcode {
     const { lastKey, hasNext, submissions } = submissionList;
     return new SubmissionList(lastKey, hasNext, submissions);
   }
+
+  async getRandomQuestion(): Promise<Problem> {
+    const data = await this.graphQLHelper.getRandomQuestion();
+    const { randomQuestion } = data;
+    const { titleSlug } = randomQuestion;
+    return await this.getProblem(titleSlug);
+  }
 }

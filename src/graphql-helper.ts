@@ -144,4 +144,16 @@ export class GraphQLHelper {
     `;
     return await this.graphQLClient.request(query, JSON.stringify(variables));
   }
+
+  async getRandomQuestion() {
+    const variables = { categorySlug: '', filters: {} };
+    const query = gql`
+      query randomQuestion($categorySlug: String, $filters: QuestionListFilterInput) {
+        randomQuestion(categorySlug: $categorySlug, filters: $filters) {
+          titleSlug
+        }
+      }
+    `;
+    return await this.graphQLClient.request(query, JSON.stringify(variables));
+  }
 }
