@@ -3,7 +3,7 @@ import { Constants } from './constants';
 import { ISortAndFilterParams } from './models/ISortAndFilterParams';
 
 export class GraphQLHelper {
-  private static readonly QUESTION_QUERY = `
+  private static readonly QUESTION_FIELDS = `
           questionId
           questionFrontendId
           title
@@ -33,6 +33,25 @@ export class GraphQLHelper {
           hasSolution
           hasVideoSolution
     `;
+  private static readonly TAG_QUESTION_FIELDS = `
+            status
+            questionId
+            freqBar
+            questionFrontendId
+            title
+            titleSlug
+            stats
+            difficulty
+            isPaidOnly
+            topicTags {
+              name
+              slug
+            }
+            companyTags {
+              name
+              slug
+            }
+  `;
   private graphQLClient: GraphQLClient;
 
   constructor(csrfToken: string, session: string) {
@@ -58,7 +77,7 @@ export class GraphQLHelper {
     const query = gql`
       query questionData($titleSlug: String!) {
         question(titleSlug: $titleSlug) {
-            ${GraphQLHelper.QUESTION_QUERY}
+            ${GraphQLHelper.QUESTION_FIELDS}
         }
       }
     `;
@@ -114,7 +133,7 @@ export class GraphQLHelper {
         problemsetQuestionList: questionList(categorySlug: $categorySlug, limit: $limit, skip: $skip, filters: $filters) {
           total: totalNum
           questions: data {
-            ${GraphQLHelper.QUESTION_QUERY}
+            ${GraphQLHelper.QUESTION_FIELDS}
           }
         }
       }
@@ -166,23 +185,7 @@ export class GraphQLHelper {
           name
           slug
           questions {
-            status
-            questionId
-            freqBar
-            questionFrontendId
-            title
-            titleSlug
-            stats
-            difficulty
-            isPaidOnly
-            topicTags {
-              name
-              slug
-            }
-            companyTags {
-              name
-              slug
-            }
+            ${GraphQLHelper.TAG_QUESTION_FIELDS}
           }
           frequencies
         }
@@ -198,23 +201,7 @@ export class GraphQLHelper {
         companyTag(slug: $slug) {
           name
           questions {
-            status
-            questionId
-            freqBar
-            questionFrontendId
-            title
-            titleSlug
-            stats
-            difficulty
-            isPaidOnly
-            topicTags {
-              name
-              slug
-            }
-            companyTags {
-              name
-              slug
-            }
+            ${GraphQLHelper.TAG_QUESTION_FIELDS}
           }
           frequencies
         }
