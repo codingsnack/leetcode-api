@@ -1,3 +1,4 @@
+import { ISortAndFilterParams } from './models/ISortAndFilterParams';
 import { MyLists } from './my-lists';
 import { GraphQLHelper } from './graphql-helper';
 import { Problem } from './problem';
@@ -25,8 +26,8 @@ export default class Leetcode {
     return new MyLists(allFavorites, watchedFavorites);
   }
 
-  async getProblems(): Promise<ProblemList> {
-    const data = await this.graphQLHelper.getProblems();
+  async getProblems(params?: ISortAndFilterParams): Promise<ProblemList> {
+    const data = await this.graphQLHelper.getProblems(params);
     const { problemsetQuestionList } = data;
     const { total, questions } = problemsetQuestionList;
     return new ProblemList(total, questions);

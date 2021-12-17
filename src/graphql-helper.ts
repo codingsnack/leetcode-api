@@ -1,5 +1,6 @@
 import { gql, GraphQLClient } from 'graphql-request';
 import { Constants } from './constants';
+import { ISortAndFilterParams } from './models/ISortAndFilterParams';
 
 export class GraphQLHelper {
   private static readonly QUESTION_QUERY = `
@@ -104,8 +105,10 @@ export class GraphQLHelper {
     return await this.graphQLClient.request(query);
   }
 
-  async getProblems() {
-    const variables = { categorySlug: '', skip: 0, limit: 100, filters: {} };
+  async getProblems(params?: ISortAndFilterParams) {
+    const { categorySlug = '', skip = 0, limit = 100, filters = {} } = params || {};
+    const variables = { categorySlug, skip, limit, filters };
+
     const query = gql`
       query problemsetQuestionList($categorySlug: String, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {
         problemsetQuestionList: questionList(categorySlug: $categorySlug, limit: $limit, skip: $skip, filters: $filters) {
