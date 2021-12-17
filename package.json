@@ -23,12 +23,14 @@
   },
   "homepage": "https://github.com/codingsnack/leetcode-api#readme",
   "devDependencies": {
+    "@types/node-fetch": "^3.0.3",
     "rimraf": "^3.0.2",
     "typedoc": "^0.22.10",
     "typescript": "^4.5.4"
   },
   "dependencies": {
     "delay": "^5.0.0",
-    "graphql-request": "^3.7.0"
+    "graphql-request": "^3.7.0",
+    "node-fetch": "^2.6.1"
   }
 }

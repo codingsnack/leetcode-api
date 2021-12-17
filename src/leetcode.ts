@@ -5,6 +5,8 @@ import { Problem } from './problem';
 import { ProblemList } from './problem-list';
 import { IConfig } from './models/IConfig';
 import { SubmissionList } from './submission-list';
+import { Constants } from './constants';
+import fetch from 'node-fetch';
 
 export default class Leetcode {
   private graphQLHelper: GraphQLHelper;
@@ -45,5 +47,10 @@ export default class Leetcode {
     const { randomQuestion } = data;
     const { titleSlug } = randomQuestion;
     return await this.getProblem(titleSlug);
+  }
+
+  async getPublicList(listId: string): Promise<PublicList.IPublicList> {
+    const res = await fetch(`${Constants.ENDPOINT}/list/api/get_list/${listId}/`);
+    return await res.json();
   }
 }
