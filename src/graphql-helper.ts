@@ -121,4 +121,27 @@ export class GraphQLHelper {
     `;
     return await this.graphQLClient.request(query, JSON.stringify(variables));
   }
+
+  async getSubmissions(questionSlug: string) {
+    const variables = { offset: 0, limit: 100, lastKey: null, questionSlug };
+    const query = gql`
+      query Submissions($offset: Int!, $limit: Int!, $lastKey: String, $questionSlug: String!) {
+        submissionList(offset: $offset, limit: $limit, lastKey: $lastKey, questionSlug: $questionSlug) {
+          lastKey
+          hasNext
+          submissions {
+            id
+            statusDisplay
+            lang
+            runtime
+            timestamp
+            url
+            isPending
+            memory
+          }
+        }
+      }
+    `;
+    return await this.graphQLClient.request(query, JSON.stringify(variables));
+  }
 }

@@ -4,6 +4,7 @@ import { GraphQLHelper } from './graphql-helper';
 import { Problem } from './problem';
 import { ProblemList } from './problem-list';
 import { IConfig } from './models/IConfig';
+import { SubmissionList } from './submission-list';
 
 export default class Leetcode {
   private graphQLHelper: GraphQLHelper;
@@ -31,5 +32,11 @@ export default class Leetcode {
     const { problemsetQuestionList } = data;
     const { total, questions } = problemsetQuestionList;
     return new ProblemList(total, questions);
+  }
+  async getSubmissions(titleSlug: string): Promise<SubmissionList> {
+    const data = await this.graphQLHelper.getSubmissions(titleSlug);
+    const { submissionList } = data;
+    const { lastKey, hasNext, submissions } = submissionList;
+    return new SubmissionList(lastKey, hasNext, submissions);
   }
 }
