@@ -1,3 +1,4 @@
+import { MyLists } from './my-lists';
 import { GraphQLHelper } from './graphql-helper';
 import { Problem } from './problem';
 
@@ -18,5 +19,12 @@ export default class Leetcode {
     const data = await this.graphQLHelper.getProblem(titleSlug);
     const { question } = data;
     return new Problem(question);
+  }
+
+  async getMyLists(): Promise<MyLists> {
+    const data = await this.graphQLHelper.getMyLists();
+    const { favoritesLists } = data;
+    const { allFavorites, watchedFavorites } = favoritesLists;
+    return new MyLists(allFavorites, watchedFavorites);
   }
 }

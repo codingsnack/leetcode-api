@@ -48,4 +48,44 @@ export class GraphQLHelper {
     `;
     return await this.graphQLClient.request(query, JSON.stringify(variables));
   }
+
+  async getMyLists() {
+    const query = gql`
+      query favoritesList {
+        favoritesLists {
+          allFavorites {
+            idHash
+            name
+            description
+            viewCount
+            creator
+            isWatched
+            isPublicFavorite
+            questions {
+              questionId
+              status
+              title
+              titleSlug
+            }
+          }
+          watchedFavorites {
+            idHash
+            name
+            description
+            viewCount
+            creator
+            isWatched
+            isPublicFavorite
+            questions {
+              questionId
+              status
+              title
+              titleSlug
+            }
+          }
+        }
+      }
+    `;
+    return await this.graphQLClient.request(query);
+  }
 }
