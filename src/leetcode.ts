@@ -68,4 +68,39 @@ export default class Leetcode {
     const { name, slug, questions, frequencies } = companyTag;
     return new TagInfo(name, slug, questions, frequencies);
   }
+
+  async getSimilarProblems(titleSlug: string, depth = 1): Promise<Problem> {
+    const problem = await this.getProblem(titleSlug);
+    const visited: Set<String> = new Set();
+    const q: Problem[] = [];
+    q.push(problem);
+    while (q.length > 0 && depth > 0) {
+      const length = q.length;
+      for (let i = 0; i < length; i++) {
+        const currentProblem: Problem = q.shift()!;
+        if (visited.has(currentProblem.titleSlug)) continue;
+        visited.add(currentProblem.titleSlug);
+        await this.fillSimilarProblems(currentProblem);
+        q.push(...currentProblem.similarProblems);
+      }
+      depth--;
+    }
+    return problem;
+  }
+
+  private async fillSimilarProblems(problem: Problem) {
+    const similarProblemsParsed: Object[] = this.parseSimilarQuestions(problem);
+
+    for (let i = 0; i < similarProblemsParsed.length; i++) {
+      const item: any = similarProblemsParsed[i];
+      const { titleSlug } = item;
+      const currentProblem = await this.getProblem(titleSlug);
+      problem.similarProblems.push(currentProblem);
+    }
+  }
+
+  private parseSimilarQuestions(problem: Problem) {
+    const { similarQuestions } = problem;
+    return similarQuestions ? JSON.parse(problem.similarQuestions) : [];
+  }
 }

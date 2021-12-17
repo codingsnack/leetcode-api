@@ -29,6 +29,8 @@ export class Problem implements IProblem {
   hasVideoSolution: boolean;
   url: string;
 
+  similarProblems: Problem[] = [];
+
   constructor(question: IProblem) {
     const {
       questionId,
