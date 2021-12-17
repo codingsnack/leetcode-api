@@ -190,4 +190,36 @@ export class GraphQLHelper {
     `;
     return await this.graphQLClient.request(query, JSON.stringify(variables));
   }
+  async getProblemsByCompany(company: string) {
+    const variables = { slug: company };
+
+    const query = gql`
+      query getCompanyTag($slug: String!) {
+        companyTag(slug: $slug) {
+          name
+          questions {
+            status
+            questionId
+            freqBar
+            questionFrontendId
+            title
+            titleSlug
+            stats
+            difficulty
+            isPaidOnly
+            topicTags {
+              name
+              slug
+            }
+            companyTags {
+              name
+              slug
+            }
+          }
+          frequencies
+        }
+      }
+    `;
+    return await this.graphQLClient.request(query, JSON.stringify(variables));
+  }
 }
