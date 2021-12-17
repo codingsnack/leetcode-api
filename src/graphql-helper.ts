@@ -156,4 +156,38 @@ export class GraphQLHelper {
     `;
     return await this.graphQLClient.request(query, JSON.stringify(variables));
   }
+
+  async getProblemsByTag(tag: string) {
+    const variables = { slug: tag };
+
+    const query = gql`
+      query getTopicTag($slug: String!) {
+        topicTag(slug: $slug) {
+          name
+          slug
+          questions {
+            status
+            questionId
+            freqBar
+            questionFrontendId
+            title
+            titleSlug
+            stats
+            difficulty
+            isPaidOnly
+            topicTags {
+              name
+              slug
+            }
+            companyTags {
+              name
+              slug
+            }
+          }
+          frequencies
+        }
+      }
+    `;
+    return await this.graphQLClient.request(query, JSON.stringify(variables));
+  }
 }

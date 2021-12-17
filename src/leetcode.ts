@@ -1,3 +1,4 @@
+import { TagInfo } from './tag-info';
 import { ISortAndFilterParams } from './models/ISortAndFilterParams';
 import { MyLists } from './my-lists';
 import { GraphQLHelper } from './graphql-helper';
@@ -52,5 +53,12 @@ export default class Leetcode {
   async getPublicList(listId: string): Promise<PublicList.IPublicList> {
     const res = await fetch(`${Constants.ENDPOINT}/list/api/get_list/${listId}/`);
     return await res.json();
+  }
+
+  async getProblemsByTag(tag: string): Promise<TagInfo> {
+    const data = await this.graphQLHelper.getProblemsByTag(tag);
+    const { topicTag } = data;
+    const { name, slug, questions, frequencies } = topicTag;
+    return new TagInfo(name, slug, questions, frequencies);
   }
 }
