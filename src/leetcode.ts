@@ -6,15 +6,16 @@ import { Problem } from './problem';
 import { ProblemList } from './problem-list';
 import { IConfig } from './models/IConfig';
 import { SubmissionList } from './submission-list';
-import { Constants } from './constants';
-import fetch from 'node-fetch';
+import { HttpHelper } from './http-helper';
 
 export default class Leetcode {
   private graphQLHelper: GraphQLHelper;
+  private httpHelper: HttpHelper;
 
   constructor(config: IConfig) {
     const { csrfToken, session } = config;
     this.graphQLHelper = new GraphQLHelper(csrfToken, session);
+    this.httpHelper = new HttpHelper();
   }
 
   async getProblem(titleSlug: string): Promise<Problem> {
@@ -51,8 +52,7 @@ export default class Leetcode {
   }
 
   async getPublicList(listId: string): Promise<PublicList.IPublicList> {
-    const res = await fetch(`${Constants.ENDPOINT}/list/api/get_list/${listId}/`);
-    return await res.json();
+    return await this.httpHelper.getPublicList(listId);
   }
 
   async getProblemsByTag(tag: string): Promise<TagInfo> {
