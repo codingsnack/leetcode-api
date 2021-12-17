@@ -1,24 +1,7 @@
+import { IProblem } from './models/IProblem';
 import { Constants } from './constants';
-export interface IProblem {
-  questionId: string;
-  questionFrontendId: string;
-  title: string;
-  titleSlug: string;
-  content: string;
-  translatedTitle: null;
-  translatedContent: null;
-  isPaidOnly: boolean;
-  difficulty: string;
-  likes: number;
-  dislikes: number;
-  isLiked: null;
-  similarQuestions: string;
-  exampleTestcases: string;
-  companyTagStats: string;
-  stats: string;
-  hints: string[];
-  sampleTestCase: string;
-}
+import { IDifficulty } from './models/IDifficulty';
+import { ITopicTag } from './models/ITopicTag';
 
 export class Problem implements IProblem {
   questionId: string;
@@ -26,10 +9,7 @@ export class Problem implements IProblem {
   title: string;
   titleSlug: string;
   content: string;
-  translatedTitle: null;
-  translatedContent: null;
   isPaidOnly: boolean;
-  difficulty: string;
   likes: number;
   dislikes: number;
   isLiked: null;
@@ -39,6 +19,14 @@ export class Problem implements IProblem {
   stats: string;
   hints: string[];
   sampleTestCase: string;
+  acRate: number;
+  difficulty: IDifficulty;
+  freqBar: number;
+  isFavor: boolean;
+  status: string;
+  topicTags: ITopicTag[];
+  hasSolution: boolean;
+  hasVideoSolution: boolean;
   url: string;
 
   constructor(question: IProblem) {
@@ -48,10 +36,7 @@ export class Problem implements IProblem {
       title,
       titleSlug,
       content,
-      translatedTitle,
-      translatedContent,
       isPaidOnly,
-      difficulty,
       likes,
       dislikes,
       isLiked,
@@ -61,6 +46,14 @@ export class Problem implements IProblem {
       stats,
       hints,
       sampleTestCase,
+      acRate,
+      difficulty,
+      freqBar,
+      isFavor,
+      status,
+      topicTags,
+      hasSolution,
+      hasVideoSolution,
     } = question;
 
     this.questionId = questionId;
@@ -68,10 +61,7 @@ export class Problem implements IProblem {
     this.title = title;
     this.titleSlug = titleSlug;
     this.content = content;
-    this.translatedTitle = translatedTitle;
-    this.translatedContent = translatedContent;
     this.isPaidOnly = isPaidOnly;
-    this.difficulty = difficulty;
     this.likes = likes;
     this.dislikes = dislikes;
     this.isLiked = isLiked;
@@ -81,6 +71,14 @@ export class Problem implements IProblem {
     this.stats = stats;
     this.hints = hints;
     this.sampleTestCase = sampleTestCase;
+    this.acRate = acRate;
+    this.difficulty = difficulty;
+    this.freqBar = freqBar;
+    this.isFavor = isFavor;
+    this.status = status;
+    this.topicTags = topicTags;
+    this.hasSolution = hasSolution;
+    this.hasVideoSolution = hasVideoSolution;
     this.url = `${Constants.ENDPOINT}/problems/${titleSlug}`;
   }
 }

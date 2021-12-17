@@ -2,6 +2,36 @@ import { gql, GraphQLClient } from 'graphql-request';
 import { Constants } from './constants';
 
 export class GraphQLHelper {
+  private static readonly QUESTION_QUERY = `
+          questionId
+          questionFrontendId
+          title
+          titleSlug
+          content
+          isPaidOnly
+          difficulty
+          likes
+          dislikes
+          isLiked
+          similarQuestions
+          exampleTestcases
+          companyTagStats
+          stats
+          hints
+          sampleTestCase
+          acRate
+          difficulty
+          freqBar
+          isFavor
+          status
+          topicTags {
+            name
+            id
+            slug
+          }
+          hasSolution
+          hasVideoSolution
+    `;
   private graphQLClient: GraphQLClient;
 
   constructor(csrfToken: string, session: string) {
@@ -27,22 +57,7 @@ export class GraphQLHelper {
     const query = gql`
       query questionData($titleSlug: String!) {
         question(titleSlug: $titleSlug) {
-          questionId
-          questionFrontendId
-          title
-          titleSlug
-          content
-          isPaidOnly
-          difficulty
-          likes
-          dislikes
-          isLiked
-          similarQuestions
-          exampleTestcases
-          companyTagStats
-          stats
-          hints
-          sampleTestCase
+            ${GraphQLHelper.QUESTION_QUERY}
         }
       }
     `;
@@ -87,5 +102,20 @@ export class GraphQLHelper {
       }
     `;
     return await this.graphQLClient.request(query);
+  }
+
+  async getProblems() {
+    const variables = { categorySlug: '', skip: 0, limit: 100, filters: {} };
+    const query = gql`
+      query problemsetQuestionList($categorySlug: String, $limit: Int, $skip: Int, $filters: QuestionListFilterInput) {
+        problemsetQuestionList: questionList(categorySlug: $categorySlug, limit: $limit, skip: $skip, filters: $filters) {
+          total: totalNum
+          questions: data {
+            ${GraphQLHelper.QUESTION_QUERY}
+          }
+        }
+      }
+    `;
+    return await this.graphQLClient.request(query, JSON.stringify(variables));
   }
 }

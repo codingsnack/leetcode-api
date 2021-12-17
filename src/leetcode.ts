@@ -1,16 +1,13 @@
 import { MyLists } from './my-lists';
 import { GraphQLHelper } from './graphql-helper';
 import { Problem } from './problem';
-
-interface Config {
-  csrfToken: string;
-  session: string;
-}
+import { ProblemList } from './problem-list';
+import { IConfig } from './models/IConfig';
 
 export default class Leetcode {
   private graphQLHelper: GraphQLHelper;
 
-  constructor(config: Config) {
+  constructor(config: IConfig) {
     const { csrfToken, session } = config;
     this.graphQLHelper = new GraphQLHelper(csrfToken, session);
   }
@@ -26,5 +23,12 @@ export default class Leetcode {
     const { favoritesLists } = data;
     const { allFavorites, watchedFavorites } = favoritesLists;
     return new MyLists(allFavorites, watchedFavorites);
+  }
+
+  async getProblems(): Promise<ProblemList> {
+    const data = await this.graphQLHelper.getProblems();
+    const { problemsetQuestionList } = data;
+    const { total, questions } = problemsetQuestionList;
+    return new ProblemList(total, questions);
   }
 }
