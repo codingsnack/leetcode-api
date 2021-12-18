@@ -9,7 +9,8 @@
   "scripts": {
     "tsc": "tsc",
     "develop": "tsc && yalc publish",
-    "build-docs": "rimraf docs && typedoc src/"
+    "build-docs": "rimraf docs && typedoc src/",
+    "deploy": "npm run build-docs && gh-pages -d docs"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/codingsnack/leetcode-api#readme",
   "devDependencies": {
     "@types/node-fetch": "^3.0.3",
+    "gh-pages": "^3.2.3",
     "rimraf": "^3.0.2",
     "typedoc": "^0.22.10",
     "typescript": "^4.5.4"
