@@ -62,8 +62,8 @@ export default class Leetcode {
     return new TagInfo(name, slug, questions, frequencies);
   }
 
-  async getProblemsByCompany(tag: string): Promise<TagInfo> {
-    const data = await this.graphQLHelper.getProblemsByCompany(tag);
+  async getProblemsByCompany(company: string): Promise<TagInfo> {
+    const data = await this.graphQLHelper.getProblemsByCompany(company);
     const { companyTag } = data;
     const { name, slug, questions, frequencies } = companyTag;
     return new TagInfo(name, slug, questions, frequencies);
