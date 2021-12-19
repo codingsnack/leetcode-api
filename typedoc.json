@@ -1,0 +1,7 @@
+{
+  "entryPointStrategy": "expand",
+  "entryPoints": ["./src"],
+  "hideGenerator": true,
+  "name": "Leetcode-API",
+  "cleanOutputDir": true
+}

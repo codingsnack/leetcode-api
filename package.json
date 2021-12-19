@@ -9,7 +9,7 @@
   "scripts": {
     "tsc": "tsc",
     "develop": "tsc && yalc publish",
-    "build-docs": "rimraf docs && typedoc src/**/*",
+    "build-docs": "rimraf docs && typedoc --options typedoc.json",
     "deploy": "npm run build-docs && gh-pages -d docs"
   },
   "repository": {
