@@ -8,7 +8,7 @@
   - [Docs](#docs)
   - [Todo](#todo)
     - [Features](#features)
-    - [Technical Improvements](#technical-improvements)
+    - [Technical/Other Improvements](#technicalother-improvements)
 
 ## Introduction
 
@@ -82,7 +82,9 @@ For docs refer this [link](https://codingsnack.github.io/leetcode-api/).
 - Optimize similarProblems method
 - Build adjaceny list of problems based on tag, company etc so its easier to visualize the connections between similar problems.
 
-### Technical Improvements
+### Technical/Other Improvements
 
-- Check ts docs to ensure that it has data types generated as well. Right now data types(classes) like Problem are not generated in docs.
 - Add better docs, wiki and examples.
+- Add Contributing Page.
+- Add github actions to check the build process and automatically generate docs and deploy them.
+- Update master branch to main branch.
