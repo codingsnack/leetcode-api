@@ -16,8 +16,6 @@ This is a [npm library](https://www.npmjs.com/package/@codingsnack/leetcode-api)
 
 ## Getting Started
 
----
-
 Install the api into your node project through npm or yarn.
 
 - npm: `npm i @codingsnack/leetcode-api`
@@ -50,7 +48,6 @@ main();
 
 ## Available methods
 
----
 Currently availably methods are
 
 - `getProblem(slug)`: Get information about single problem based on its title(also referred to as slug)
@@ -65,13 +62,9 @@ Currently availably methods are
 
 ## Docs
 
----
-
 For docs refer this [link](https://codingsnack.github.io/leetcode-api/).
 
 ## Todo
-
----
 
 ### Features
 
