@@ -29,6 +29,8 @@ To use this api, you need to login to your [leetcode.com](https://leetcode.com/)
 - LEETCODE_SESSION
 
 ```js
+const { Leetcode } = require('@codingsnack/leetcode-api');
+
 const main = async () => {
   // csrfToken after you've logged in
   const csrfToken = '';
