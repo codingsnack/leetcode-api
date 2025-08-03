@@ -57,6 +57,8 @@
 <li><code>getProblemsByTag(tag)</code>: Get problems by tag(like array). This is same as going to <a href="https://leetcode.com/tag/array">https://leetcode.com/tag/array</a>.</li>
 <li><code>getProblemsByCompany(company)</code>: Get problems by company(like apple). This is same as going to <a href="https://leetcode.com/company/apple">https://leetcode.com/company/apple</a>.</li>
 <li><code>getSimilarProblems(slug, depth = 1)</code>: Get similar problems based on slug. Depth param is optional and default value is 1. If depth is say <code>2</code> and slug is <code>two-sum</code>, then this will fetch similar questions to <code>two-sum</code> and then similar questions to all the similar questions of <code>two-sum</code>. Note that this will return a problem instance and this will have a field called similarProblems which is an array and the consumer can recurse through this. Also note that this method is still in beta.</li>
+<li><code>addQuestionToFavorite(favoriteSlug, questionSlug)</code>: Add a question to a favorite list. Returns an object with <code>ok</code> (boolean) and <code>error</code> (string) properties.</li>
+<li><code>batchAddQuestionsToFavorite(favoriteSlug, questionSlugs)</code>: Add multiple questions to a favorite list. Returns an object with <code>ok</code> (boolean) and <code>error</code> (string) properties.</li>
 </ul>
 
 <a href="#docs" id="docs" style="color: inherit; text-decoration: none;">
