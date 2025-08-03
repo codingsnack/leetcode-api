@@ -209,4 +209,19 @@ export class GraphQLHelper {
     `;
     return await this.graphQLClient.request(query, JSON.stringify(variables));
   }
+
+  async addQuestionToFavorite(favoriteSlug: string, questionSlug: string): Promise<{ ok: boolean; error: string }> {
+    const variables = { favoriteSlug, questionSlug };
+    const query = gql`
+      mutation addQuestionToFavoriteV2($favoriteSlug: String!, $questionSlug: String!) {
+        addQuestionToFavoriteV2(favoriteSlug: $favoriteSlug, questionSlug: $questionSlug) {
+          ok
+          error
+        }
+      }
+    `;
+    const data: any = await this.graphQLClient.request(query, JSON.stringify(variables));
+    const { addQuestionToFavoriteV2 } = data;
+    return { ok: addQuestionToFavoriteV2.ok, error: addQuestionToFavoriteV2.error };
+  }
 }

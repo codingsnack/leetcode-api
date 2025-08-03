@@ -1,12 +1,12 @@
-import { TagInfo } from './tag-info';
+import { GraphQLHelper } from './graphql-helper';
+import { HttpHelper } from './http-helper';
+import { IConfig } from './models/IConfig';
 import { ISortAndFilterParams } from './models/ISortAndFilterParams';
 import { MyLists } from './my-lists';
-import { GraphQLHelper } from './graphql-helper';
 import { Problem } from './problem';
 import { ProblemList } from './problem-list';
-import { IConfig } from './models/IConfig';
 import { SubmissionList } from './submission-list';
-import { HttpHelper } from './http-helper';
+import { TagInfo } from './tag-info';
 
 export default class Leetcode {
   private graphQLHelper: GraphQLHelper;
@@ -102,5 +102,11 @@ export default class Leetcode {
   private parseSimilarQuestions(problem: Problem) {
     const { similarQuestions } = problem;
     return similarQuestions ? JSON.parse(problem.similarQuestions) : [];
+  }
+
+  async addQuestionToFavorite(favoriteSlug: string, questionSlug: string): Promise<{ ok: boolean; error: string }> {
+    const data = await this.graphQLHelper.addQuestionToFavorite(favoriteSlug, questionSlug);
+    const { ok, error } = data;
+    return { ok, error };
   }
 }
