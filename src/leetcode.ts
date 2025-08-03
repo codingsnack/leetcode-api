@@ -109,4 +109,10 @@ export default class Leetcode {
     const { ok, error } = data;
     return { ok, error };
   }
+
+  async batchAddQuestionsToFavorite(favoriteSlug: string, questionSlugs: string[]): Promise<{ ok: boolean; error: string }> {
+    const data = await this.graphQLHelper.batchAddQuestionsToFavorite(favoriteSlug, questionSlugs);
+    const { ok, error } = data;
+    return { ok, error };
+  }
 }

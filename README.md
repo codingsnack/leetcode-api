@@ -61,6 +61,8 @@ Currently availably methods are
 - `getProblemsByTag(tag)`: Get problems by tag(like array). This is same as going to <https://leetcode.com/tag/array>.
 - `getProblemsByCompany(company)`: Get problems by company(like apple). This is same as going to <https://leetcode.com/company/apple>.
 - `getSimilarProblems(slug, depth = 1)`: Get similar problems based on slug. Depth param is optional and default value is 1. If depth is say `2` and slug is `two-sum`, then this will fetch similar questions to `two-sum` and then similar questions to all the similar questions of `two-sum`. Note that this will return a problem instance and this will have a field called similarProblems which is an array and the consumer can recurse through this. Also note that this method is still in beta.
+- `addQuestionToFavorite(favoriteSlug, questionSlug)`: Add a question to a favorite list. Returns an object with `ok` (boolean) and `error` (string) properties.
+- `batchAddQuestionsToFavorite(favoriteSlug, questionSlugs)`: Add multiple questions to a favorite list. Returns an object with `ok` (boolean) and `error` (string) properties.
 
 ## Docs
 
