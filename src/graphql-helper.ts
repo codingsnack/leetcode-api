@@ -2,6 +2,7 @@ import { gql, GraphQLClient } from 'graphql-request';
 import { Constants } from './constants';
 import { ISortAndFilterParams } from './models/ISortAndFilterParams';
 import { ArticleOrderByEnum, IDiscussPostItems } from './models/IDiscussPostItems';
+import { ODiscussPostItems } from './models/ODiscussPostItems';
 
 export class GraphQLHelper {
   private static readonly QUESTION_FIELDS = `
@@ -241,7 +242,7 @@ export class GraphQLHelper {
     return { ok: batchAddQuestionsToFavorite.ok, error: batchAddQuestionsToFavorite.error };
   }
 
-  async getDiscussPostItems(options: IDiscussPostItems) {
+  async getDiscussPostItems(options: IDiscussPostItems): Promise<ODiscussPostItems> {
     const { orderBy = ArticleOrderByEnum.HOT, keywords = [''], tagSlugs = [], skip = 0, first = 50 } = options;
     const variables = { orderBy, keywords, tagSlugs, skip, first };
 
@@ -306,6 +307,7 @@ export class GraphQLHelper {
         }
       }
     `;
-    return await this.graphQLClient.request(query, JSON.stringify(variables));
+    const data: ODiscussPostItems = await this.graphQLClient.request(query, JSON.stringify(variables));
+    return data;
   }
 }

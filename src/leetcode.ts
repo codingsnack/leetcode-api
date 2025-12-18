@@ -8,6 +8,7 @@ import { ProblemList } from './problem-list';
 import { SubmissionList } from './submission-list';
 import { TagInfo } from './tag-info';
 import { ArticleOrderByEnum, IDiscussPostItems, defaultDiscussPostItems } from './models/IDiscussPostItems';
+import { ODiscussPostItems } from './models/ODiscussPostItems';
 
 export default class Leetcode {
   private graphQLHelper: GraphQLHelper;
@@ -117,7 +118,7 @@ export default class Leetcode {
     return { ok, error };
   }
 
-  async getDiscussPostItems(options?: IDiscussPostItems) {
+  async getDiscussPostItems(options?: IDiscussPostItems): Promise<ODiscussPostItems> {
     const mergedOptions = { ...defaultDiscussPostItems, ...options };
     return await this.graphQLHelper.getDiscussPostItems(mergedOptions);
   }
