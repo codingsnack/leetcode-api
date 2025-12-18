@@ -1,6 +1,7 @@
 import { gql, GraphQLClient } from 'graphql-request';
 import { Constants } from './constants';
 import { ISortAndFilterParams } from './models/ISortAndFilterParams';
+import { ArticleOrderByEnum, IDiscussPostItems } from './models/IDiscussPostItems';
 
 export class GraphQLHelper {
   private static readonly QUESTION_FIELDS = `
@@ -238,5 +239,73 @@ export class GraphQLHelper {
     const data: any = await this.graphQLClient.request(query, JSON.stringify(variables));
     const { batchAddQuestionsToFavorite } = data;
     return { ok: batchAddQuestionsToFavorite.ok, error: batchAddQuestionsToFavorite.error };
+  }
+
+  async getDiscussPostItems(options: IDiscussPostItems) {
+    const { orderBy = ArticleOrderByEnum.HOT, keywords = [''], tagSlugs = [], skip = 0, first = 50 } = options;
+    const variables = { orderBy, keywords, tagSlugs, skip, first };
+
+    const query = gql`
+      query discussPostItems($orderBy: ArticleOrderByEnum, $keywords: [String]!, $tagSlugs: [String!], $skip: Int, $first: Int) {
+        ugcArticleDiscussionArticles(orderBy: $orderBy, keywords: $keywords, tagSlugs: $tagSlugs, skip: $skip, first: $first) {
+          totalNum
+          pageInfo {
+            hasNextPage
+          }
+          edges {
+            node {
+              uuid
+              title
+              slug
+              summary
+              author {
+                realName
+                userAvatar
+                userSlug
+                userName
+                nameColor
+                certificationLevel
+                activeBadge {
+                  icon
+                  displayName
+                }
+              }
+              isOwner
+              isAnonymous
+              isSerialized
+              scoreInfo {
+                scoreCoefficient
+              }
+              articleType
+              thumbnail
+              createdAt
+              updatedAt
+              status
+              isLeetcode
+              canSee
+              canEdit
+              isMyFavorite
+              myReactionType
+              topicId
+              hitCount
+              reactions {
+                count
+                reactionType
+              }
+              tags {
+                name
+                slug
+                tagType
+              }
+              topic {
+                id
+                topLevelCommentCount
+              }
+            }
+          }
+        }
+      }
+    `;
+    return await this.graphQLClient.request(query, JSON.stringify(variables));
   }
 }

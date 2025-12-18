@@ -7,6 +7,7 @@ import { Problem } from './problem';
 import { ProblemList } from './problem-list';
 import { SubmissionList } from './submission-list';
 import { TagInfo } from './tag-info';
+import { ArticleOrderByEnum, IDiscussPostItems, defaultDiscussPostItems } from './models/IDiscussPostItems';
 
 export default class Leetcode {
   private graphQLHelper: GraphQLHelper;
@@ -114,5 +115,10 @@ export default class Leetcode {
     const data = await this.graphQLHelper.batchAddQuestionsToFavorite(favoriteSlug, questionSlugs);
     const { ok, error } = data;
     return { ok, error };
+  }
+
+  async getDiscussPostItems(options?: IDiscussPostItems) {
+    const mergedOptions = { ...defaultDiscussPostItems, ...options };
+    return await this.graphQLHelper.getDiscussPostItems(mergedOptions);
   }
 }
