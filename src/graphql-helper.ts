@@ -3,6 +3,7 @@ import { Constants } from './constants';
 import { ISortAndFilterParams } from './models/ISortAndFilterParams';
 import { ArticleOrderByEnum, IDiscussPostItems } from './models/IDiscussPostItems';
 import { ODiscussPostDetail } from './models/ODiscussPostDetail';
+import { OQuestionDiscussComments as OQuestionDiscussComments } from './models/OQuestionDiscussComments';
 import { ODiscussPostItems } from './models/ODiscussPostItems';
 
 export class GraphQLHelper {
@@ -372,6 +373,65 @@ export class GraphQLHelper {
       }
     `;
     const data: ODiscussPostDetail = await this.graphQLClient.request(query, JSON.stringify(variables));
+    return data;
+  }
+
+  async questionDiscussComments(topicId: number, pageNo: number = 0, numPerPage: number = 10, orderBy: string = 'best'): Promise<OQuestionDiscussComments> {
+    const variables = { topicId, pageNo, numPerPage, orderBy };
+    const query = gql`
+      query questionDiscussComments($topicId: Int!, $orderBy: String = "newest_to_oldest", $pageNo: Int = 1, $numPerPage: Int = 10) {
+        topicComments(topicId: $topicId, orderBy: $orderBy, pageNo: $pageNo, numPerPage: $numPerPage) {
+          data {
+            id
+            pinned
+            pinnedBy {
+              username
+            }
+            post {
+              ...DiscussPost
+            }
+            intentionTag {
+              slug
+            }
+            numChildren
+          }
+          totalNum
+        }
+      }
+
+      fragment DiscussPost on PostNode {
+        id
+        voteCount
+        voteUpCount
+        voteStatus
+        content
+        updationDate
+        creationDate
+        status
+        isHidden
+        anonymous
+        author {
+          isDiscussAdmin
+          isDiscussStaff
+          username
+          nameColor
+          activeBadge {
+            displayName
+            icon
+          }
+          profile {
+            userAvatar
+            reputation
+            realName
+            certificationLevel
+          }
+          isActive
+        }
+        authorIsModerator
+        isOwnPost
+      }
+    `;
+    const data: OQuestionDiscussComments = await this.graphQLClient.request(query, JSON.stringify(variables));
     return data;
   }
 }

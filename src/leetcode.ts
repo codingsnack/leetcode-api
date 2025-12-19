@@ -9,6 +9,7 @@ import { SubmissionList } from './submission-list';
 import { TagInfo } from './tag-info';
 import { ArticleOrderByEnum, IDiscussPostItems, defaultDiscussPostItems } from './models/IDiscussPostItems';
 import { ODiscussPostDetail } from './models/ODiscussPostDetail';
+import { OQuestionDiscussComments } from './models/OQuestionDiscussComments';
 import { ODiscussPostItems } from './models/ODiscussPostItems';
 
 export default class Leetcode {
@@ -126,5 +127,9 @@ export default class Leetcode {
 
   async getDiscussPostDetail(uuid: string): Promise<ODiscussPostDetail> {
     return await this.graphQLHelper.discussPostDetail(uuid);
+  }
+
+  async getQuestionDiscussComments(topicId: number, pageNo: number = 0, numPerPage: number = 10, orderBy: string = 'best'): Promise<OQuestionDiscussComments> {
+    return await this.graphQLHelper.questionDiscussComments(topicId, pageNo, numPerPage, orderBy);
   }
 }
