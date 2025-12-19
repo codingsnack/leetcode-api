@@ -2,6 +2,7 @@ import { gql, GraphQLClient } from 'graphql-request';
 import { Constants } from './constants';
 import { ISortAndFilterParams } from './models/ISortAndFilterParams';
 import { ArticleOrderByEnum, IDiscussPostItems } from './models/IDiscussPostItems';
+import { ODiscussPostDetail } from './models/ODiscussPostDetail';
 import { ODiscussPostItems } from './models/ODiscussPostItems';
 
 export class GraphQLHelper {
@@ -308,6 +309,69 @@ export class GraphQLHelper {
       }
     `;
     const data: ODiscussPostItems = await this.graphQLClient.request(query, JSON.stringify(variables));
+    return data;
+  }
+
+  async discussPostDetail(topicId: string): Promise<ODiscussPostDetail> {
+    const variables = { topicId };
+    const query = gql`
+      query discussPostDetail($topicId: ID!) {
+        ugcArticleDiscussionArticle(topicId: $topicId) {
+          uuid
+          title
+          slug
+          summary
+          content
+          isSlate
+          author {
+            realName
+            userAvatar
+            userSlug
+            userName
+            nameColor
+            certificationLevel
+            activeBadge {
+              icon
+              displayName
+            }
+          }
+          isOwner
+          isAnonymous
+          isSerialized
+          isAuthorArticleReviewer
+          scoreInfo {
+            scoreCoefficient
+          }
+          articleType
+          thumbnail
+          summary
+          createdAt
+          updatedAt
+          status
+          isLeetcode
+          canSee
+          canEdit
+          isMyFavorite
+          myReactionType
+          topicId
+          hitCount
+          reactions {
+            count
+            reactionType
+          }
+          tags {
+            name
+            slug
+            tagType
+          }
+          topic {
+            id
+            topLevelCommentCount
+          }
+        }
+      }
+    `;
+    const data: ODiscussPostDetail = await this.graphQLClient.request(query, JSON.stringify(variables));
     return data;
   }
 }
