@@ -63,6 +63,9 @@ Currently availably methods are
 - `getSimilarProblems(slug, depth = 1)`: Get similar problems based on slug. Depth param is optional and default value is 1. If depth is say `2` and slug is `two-sum`, then this will fetch similar questions to `two-sum` and then similar questions to all the similar questions of `two-sum`. Note that this will return a problem instance and this will have a field called similarProblems which is an array and the consumer can recurse through this. Also note that this method is still in beta.
 - `addQuestionToFavorite(favoriteSlug, questionSlug)`: Add a question to a favorite list. Returns an object with `ok` (boolean) and `error` (string) properties.
 - `batchAddQuestionsToFavorite(favoriteSlug, questionSlugs)`: Add multiple questions to a favorite list. Returns an object with `ok` (boolean) and `error` (string) properties.
+- `getDiscussPostItems(topicId, params)`: Get discuss post items for a given topic ID with optional pagination, sorting, and filtering.
+- `getDiscussPostDetail(topicId)`: Get details of a specific discuss post based on its topic ID.
+- `getQuestionDiscussComments(questionSlug, topicId, params)`: Get comments for a question's discuss post, with optional pagination and sorting.
 
 ## Docs
 
