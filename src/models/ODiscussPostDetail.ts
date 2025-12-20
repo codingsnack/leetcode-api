@@ -1,6 +1,5 @@
 export interface ODiscussPostDetail {
-  data: {
-    ugcArticleDiscussionArticle: {
+  ugcArticleDiscussionArticle: {
       uuid: string;
       title: string;
       slug: string;

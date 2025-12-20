@@ -125,8 +125,8 @@ export default class Leetcode {
     return await this.graphQLHelper.getDiscussPostItems(mergedOptions);
   }
 
-  async getDiscussPostDetail(uuid: string): Promise<ODiscussPostDetail> {
-    return await this.graphQLHelper.discussPostDetail(uuid);
+  async getDiscussPostDetail(topicId: string): Promise<ODiscussPostDetail> {
+    return await this.graphQLHelper.discussPostDetail(topicId);
   }
 
   async getQuestionDiscussComments(topicId: number, pageNo: number = 0, numPerPage: number = 10, orderBy: string = 'best'): Promise<OQuestionDiscussComments> {

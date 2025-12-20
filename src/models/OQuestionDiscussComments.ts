@@ -1,6 +1,5 @@
 export interface OQuestionDiscussComments {
-  data: {
-    topicComments: {
+  topicComments: {
       data: {
         id: number;
         pinned: boolean;

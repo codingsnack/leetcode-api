@@ -372,8 +372,7 @@ export class GraphQLHelper {
         }
       }
     `;
-    const data: ODiscussPostDetail = await this.graphQLClient.request(query, JSON.stringify(variables));
-    return data;
+    return await this.graphQLClient.request(query, JSON.stringify(variables));
   }
 
   async questionDiscussComments(topicId: number, pageNo: number = 0, numPerPage: number = 10, orderBy: string = 'best'): Promise<OQuestionDiscussComments> {
@@ -431,7 +430,6 @@ export class GraphQLHelper {
         isOwnPost
       }
     `;
-    const data: OQuestionDiscussComments = await this.graphQLClient.request(query, JSON.stringify(variables));
-    return data;
+    return await this.graphQLClient.request(query, JSON.stringify(variables));
   }
 }
