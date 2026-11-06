@@ -1,5 +1,4 @@
 import { GraphQLHelper } from './graphql-helper';
-import { HttpHelper } from './http-helper';
 import { IConfig } from './models/IConfig';
 import { ISortAndFilterParams } from './models/ISortAndFilterParams';
 import { MyLists } from './my-lists';
@@ -7,15 +6,14 @@ import { Problem } from './problem';
 import { ProblemList } from './problem-list';
 import { SubmissionList } from './submission-list';
 import { TagInfo } from './tag-info';
+import { IFavoriteQuestion } from './models/IFavoriteQuestion';
 
 export default class Leetcode {
   private graphQLHelper: GraphQLHelper;
-  private httpHelper: HttpHelper;
 
   constructor(config: IConfig) {
     const { csrfToken, session } = config;
     this.graphQLHelper = new GraphQLHelper(csrfToken, session);
-    this.httpHelper = new HttpHelper();
   }
 
   async getProblem(titleSlug: string): Promise<Problem> {
@@ -51,8 +49,71 @@ export default class Leetcode {
     return await this.getProblem(titleSlug);
   }
 
+
   async getPublicList(listId: string): Promise<PublicList.IPublicList> {
-    return await this.httpHelper.getPublicList(listId);
+    // 1. Fetch list metadata
+    const detailData = await this.graphQLHelper.getFavoriteDetail(listId);
+    const detail = detailData.favoriteDetailV2;
+
+    // 2. Fetch all questions using pagination
+    const questions = await this.getFavoriteQuestions(listId);
+
+    // 3. Find additional metadata from the user's lists
+    let existingList;
+
+    try {
+      const myListsData = await this.graphQLHelper.getMyLists();
+      const { allFavorites, watchedFavorites } = myListsData.favoritesLists;
+
+      existingList = [...allFavorites, ...watchedFavorites].find(
+        (list) => list.idHash === listId
+      );
+    } catch {
+      // Optional metadata is unavailable; continue without it.
+    }
+
+    // 4. Construct the original PublicList response
+    return {
+      id_hash: detail.slug,
+      name: detail.name,
+      description: detail.description,
+      questions: questions.map((question) => ({
+        id: question.id,
+        title: question.title,
+        title_slug: question.titleSlug,
+      })),
+      is_public_favorite: detail.isPublicFavorite,
+      creator: detail.creator.userSlug,
+      ...(existingList && {
+        view_count: existingList.viewCount,
+        is_watched: existingList.isWatched,
+      }),
+    };
+  }
+
+  private async getFavoriteQuestions(
+    favoriteSlug: string
+  ): Promise<IFavoriteQuestion[]> {
+    const limit = 100;
+    let skip = 0;
+    let hasMore = true;
+
+    const allQuestions: IFavoriteQuestion[] = [];
+
+    while (hasMore) {
+      const result = await this.graphQLHelper.getFavoriteQuestionList(
+        favoriteSlug,
+        skip,
+        limit
+      );
+
+      allQuestions.push(...result.questions);
+
+      hasMore = result.hasMore;
+      skip += limit;
+    }
+
+    return allQuestions;
   }
 
   async getProblemsByTag(tag: string): Promise<TagInfo> {

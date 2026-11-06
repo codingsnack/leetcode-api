@@ -57,7 +57,7 @@ Currently availably methods are
 - `getProblems(params)`: Get all the problems based on passed params. Supports pagination, filter by category, listId, difficulty, status, premiumOnly, tags, companies, searchKeyWords. You can also orderBy FRONTEND_ID, AC_RATE(acceptance rate), DIFFICULTY, FREQUENCY. Sort order can be ascending or descending. This is same as going to <https://leetcode.com/problems>.
 - `getSubmission(slug)`: Get all submissions for given problem.
 - `getRandomQuestion()`: Get a random question.
-- `getPublicList(listId)`: Get a public list based on its listId.
+- `getPublicList(listId)`: Get a public LeetCode list by its listId, including list metadata and all its questions.
 - `getProblemsByTag(tag)`: Get problems by tag(like array). This is same as going to <https://leetcode.com/tag/array>.
 - `getProblemsByCompany(company)`: Get problems by company(like apple). This is same as going to <https://leetcode.com/company/apple>.
 - `getSimilarProblems(slug, depth = 1)`: Get similar problems based on slug. Depth param is optional and default value is 1. If depth is say `2` and slug is `two-sum`, then this will fetch similar questions to `two-sum` and then similar questions to all the similar questions of `two-sum`. Note that this will return a problem instance and this will have a field called similarProblems which is an array and the consumer can recurse through this. Also note that this method is still in beta.
