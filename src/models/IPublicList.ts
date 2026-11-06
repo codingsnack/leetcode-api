@@ -5,10 +5,10 @@ namespace PublicList {
     description: string;
     questions: Question[];
     is_public_favorite: boolean;
-    view_count: number;
+    view_count?: number;
     creator: string;
-    current_user: string;
-    is_watched: boolean;
+    current_user?: string;
+    is_watched?: boolean;
   }
 
   export interface Question {

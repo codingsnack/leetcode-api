@@ -1,6 +1,7 @@
 import { gql, GraphQLClient } from 'graphql-request';
 import { Constants } from './constants';
 import { ISortAndFilterParams } from './models/ISortAndFilterParams';
+import { IFavoriteQuestionList } from './models/IFavoriteQuestion';
 
 export class GraphQLHelper {
   private static readonly QUESTION_FIELDS = `
@@ -238,5 +239,107 @@ export class GraphQLHelper {
     const data: any = await this.graphQLClient.request(query, JSON.stringify(variables));
     const { batchAddQuestionsToFavorite } = data;
     return { ok: batchAddQuestionsToFavorite.ok, error: batchAddQuestionsToFavorite.error };
+  }
+
+  async getFavoriteQuestionList(
+    favoriteSlug: string,
+    skip = 0,
+    limit = 100
+  ): Promise<IFavoriteQuestionList> {
+    const query = gql`
+      query favoriteQuestionList(
+        $favoriteSlug: String!,
+        $filter: FavoriteQuestionFilterInput,
+        $filtersV2: QuestionFilterInput,
+        $searchKeyword: String,
+        $sortBy: QuestionSortByInput,
+        $limit: Int,
+        $skip: Int,
+        $version: String
+      ) {
+        favoriteQuestionList(
+          favoriteSlug: $favoriteSlug,
+          filter: $filter,
+          filtersV2: $filtersV2,
+          searchKeyword: $searchKeyword,
+          sortBy: $sortBy,
+          limit: $limit,
+          skip: $skip,
+          version: $version
+        ) {
+          questions {
+            difficulty
+            id
+            paidOnly
+            questionFrontendId
+            status
+            title
+            titleSlug
+            topicTags {
+              name
+              slug
+            }
+          }
+          totalLength
+          hasMore
+        }
+      }
+    `;
+
+    const variables = {
+      favoriteSlug,
+      skip,
+      limit,
+      searchKeyword: '',
+      filtersV2: {
+        filterCombineType: 'ALL',
+        statusFilter: { questionStatuses: [], operator: 'IS' },
+        difficultyFilter: { difficulties: [], operator: 'IS' },
+        languageFilter: { languageSlugs: [], operator: 'IS' },
+        topicFilter: { topicSlugs: [], operator: 'IS' },
+        acceptanceFilter: {},
+        frequencyFilter: {},
+        frontendIdFilter: {},
+        lastSubmittedFilter: {},
+        publishedFilter: {},
+        companyFilter: { companySlugs: [], operator: 'IS' },
+        positionFilter: { positionSlugs: [], operator: 'IS' },
+        positionLevelFilter: { positionLevelSlugs: [], operator: 'IS' },
+        contestPointFilter: { contestPoints: [], operator: 'IS' },
+        premiumFilter: { premiumStatus: [], operator: 'IS' }
+      },
+      sortBy: {
+        sortField: 'CUSTOM',
+        sortOrder: 'ASCENDING'
+      },
+      version: 'v2'
+    };
+
+    const data = await this.graphQLClient.request<{
+      favoriteQuestionList: IFavoriteQuestionList;
+    }>(query, variables);
+
+    return data.favoriteQuestionList;
+  }
+
+  async getFavoriteDetail(favoriteSlug: string) {
+    const query = gql`
+      query favoriteDetailV2($favoriteSlug: String!) {
+        favoriteDetailV2(favoriteSlug: $favoriteSlug) {
+          description
+          creator {
+            realName
+            userAvatar
+            userSlug
+          }
+          isPublicFavorite
+          name
+          questionNumber
+          slug
+          isDefaultList
+        }
+      }
+    `;
+    return await this.graphQLClient.request(query, { favoriteSlug });
   }
 }
